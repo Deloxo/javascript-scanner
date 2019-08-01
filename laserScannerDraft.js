@@ -1,52 +1,4 @@
-<button onclick="startScan()"> Start Object Scan </button>
-<button id="outputScan">Save File</button>
-<script>
-
 var beamLength = 0.7;
-var beamZ = 0;
-var beamX = 0;
-var resolution;
-var radius = 1;
-var vertexX;
-var vertexY;
-var vertexZ;
-
-
-function homeBeam() {
-setInterval(function () {
-   if (beamX > 0 && beamZ > 0) {
-     beamX -= 2;
-   }
-   if (beamX <= 0 && beamZ > 0) {
-     beamZ -= 2;
-     beamX = 0;
-   }
- }, 20);
-
-
- console.log("Beam homed");
-}
-
-
- function round(value, decimals) {
-   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
- }
-
-var textFile;
-
-function detect() {
-  var ring = [];
-  ring.push(beamLength);
-
-  vertexX = (radius - beamLength) * Math.sin(beamX);
-  vertexY = (radius - beamLength) * Math.cos(beamX);
-  vertexZ = (radius - beamLength) * Math.sin(beamZ);
-
-
-  textFile = textFile + "v " + round(vertexX, 4) + " " + round(vertexY, 4) + " " + round(vertexZ, 4) + "\n";
-  var fileBlob = new Blob([textFile], {type: "text/plain"});
-
-  var link = document.getElementById("outputScan");var beamLength = 0.7;
 var beamZ = 0;
 var beamX = 0;
 var radius = 1;
@@ -101,29 +53,3 @@ function stopScan() {
   errorFalse = 1;
 
 }
-  link.setAttribute("href", URL.createObjectURL(fileBlob));
-  link.setAttribute("download", "crudesphere.obj");
-  document.body.appendChild(link);
-}
-
-function startScan() {
-  console.log("Scan started");
-  setInterval(function () {
-    detect();
-    beamX += 10;
-    if (beamX == 360 && beamZ < 90) {
-      beamX = 0;
-      beamZ += 10;
-    }
-    if (beamZ == 90 && beamX == 360) {
-      console.log(textFile);
-    }
-
-      console.log("no errors detected");
-  }, 10);
-}
-
-var text = "foo\nbar\nbaz";
-
-
-</script>
